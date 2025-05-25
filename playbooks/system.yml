@@ -1,0 +1,8 @@
+---
+- name: System Settings
+  hosts: localhost
+  become: true
+  connection: local
+
+  roles:
+    - system

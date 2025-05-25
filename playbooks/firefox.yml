@@ -1,0 +1,8 @@
+---
+- name: Firefox Settings
+  hosts: localhost
+  become: true
+  connection: local
+
+  roles:
+    - firefox

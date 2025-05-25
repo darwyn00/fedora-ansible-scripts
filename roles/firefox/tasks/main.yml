@@ -1,0 +1,42 @@
+- name: Ensure policy directory exists
+  file:
+    path: /etc/firefox/policies
+    state: directory
+    mode: '0755'
+
+- name: Write policies.json to disable telemetry and Pocket
+  copy:
+    dest: /etc/firefox/policies/policies.json
+    mode: '0644'
+    content: |
+      {
+        "policies": {
+          "DisableTelemetry": true,
+          "DisableFirefoxStudies": true,
+          "DisablePocket": true,
+          "DisableFeedbackCommands": true,
+          "DisableFirefoxAccounts": true,
+          "Preferences": {
+            "extensions.pocket.enabled": {
+              "Value": false,
+              "Status": "locked"
+            },
+            "browser.newtabpage.activity-stream.feeds.section.topstories": {
+              "Value": false,
+              "Status": "locked"
+            },
+            "browser.newtabpage.activity-stream.feeds.snippets": {
+              "Value": false,
+              "Status": "locked"
+            },
+            "browser.newtabpage.activity-stream.showSponsored": {
+              "Value": false,
+              "Status": "locked"
+            },
+            "datareporting.policy.dataSubmissionEnabled": {
+              "Value": false,
+              "Status": "locked"
+            }
+          }
+        }
+      }

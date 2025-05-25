@@ -1,0 +1,201 @@
+- name: Configure global Git config
+  copy:
+    dest: "{{ lookup('env', 'HOME') }}/.gitconfig"
+    owner: "{{ lookup('env', 'USER') }}"
+    mode: '0644'
+    content: |
+      [user]
+        email = darwyn00@hotmail.com
+        name = Roger Kar
+      [core]
+        editor = code --wait
+        pager = less -FXRS
+      [init]
+        defaultBranch = main
+      [merge]
+        tool = vscode
+      [mergetool "vscode"]
+        cmd = code --wait $MERGED
+        prompt = false
+      [diff]
+        tool = vscode
+      [difftool "vscode"]
+        cmd = code --wait --diff $LOCAL $REMOTE
+      [color]
+        ui = auto
+      [alias]
+        co = checkout
+        br = branch
+        ci = commit
+        st = status
+        lg = log --oneline --graph --all --decorate
+      [log]
+        date = iso
+
+- name: Ensure ~/.config/git directory exists before configuring global .gitignore
+  file:
+    path: "{{ lookup('env', 'HOME') }}/.config/git"
+    state: directory
+    mode: '0755'
+
+- name: Configure global .gitignore
+  copy:
+    dest: "{{ lookup('env', 'HOME') }}/.config/git/ignore"
+    owner: "{{ lookup('env', 'USER') }}"
+    mode: '0644'
+    content: |
+      # === OS / Desktop Environment (Fedora / Linux) ===
+      /tmp/*
+      /var/tmp/*
+      /build/*
+      /package/*
+      /dist/*
+      *~
+      *.swp
+      *.swo
+      .DS_Store
+      .Trash-*
+      .directory
+      .cache/
+      .lock-wscript
+      *.lock
+      *.bak
+
+      # === Editors ===
+
+      # Vim
+      *.un~
+      .vimrc~
+
+      # Emacs
+      *~
+      \#*\#
+      .\#*
+
+      # VSCode
+      .vscode/
+      .history/
+
+      # JetBrains (CLion, PyCharm, etc.)
+      .idea/
+      *.iml
+
+      # === Compilers and Build Systems ===
+
+      # GCC/Clang artifacts
+      *.o
+      *.lo
+      *.obj
+      *.gch
+      *.pch
+
+      # Binary files
+      *.exe
+      *.out
+      *.app
+      *.a
+      *.so
+      *.dylib
+
+      # CMake
+      CMakeFiles/
+      CMakeCache.txt
+      cmake_install.cmake
+      Makefile
+      compile_commands.json
+      build/
+      build-*/
+
+      # Autotools
+      *.in
+      configure
+      config.log
+      config.status
+      autom4te.cache/
+      aclocal.m4
+      ltmain.sh
+      missing
+      install-sh
+      depcomp
+
+      # Meson/Ninja
+      builddir/
+      meson-logs/
+      meson-private/
+
+      # === Programming Languages ===
+
+      # Python
+      __pycache__/
+      *.py[cod]
+      *.pyo
+      *.pyd
+      .env
+      .venv
+      *.egg-info/
+
+      # Node.js
+      node_modules/
+      package-lock.json
+      npm-debug.log
+
+      # Rust
+      target/
+      Cargo.lock
+
+      # Go
+      bin/
+      pkg/
+      *.test
+
+      # Java
+      *.class
+      *.jar
+      *.war
+      *.ear
+
+      # === Version Control and Secrets ===
+      .git/
+      .gitmodules
+      *.pem
+      *.key
+      *.crt
+      *.env
+      secrets.yaml
+      .env.*
+
+      # === Containers and Virtual Environments ===
+      *.pid
+      *.sock
+      *.log
+      *.db
+      *.sqlite
+      *.tar
+      *.tar.gz
+      *.img
+      *.qcow2
+      *.vdi
+      *.vbox
+      *.vmdk
+      .Dockerfile.swp
+      .vagrant/
+
+      # === Logs and dumps ===
+      *.log
+      *.core
+      *.stackdump
+
+      # === Misc ===
+      tags
+      TAGS
+      *.tmp
+      *.bak
+      *.orig
+      *.rej
+
+      # SystemD / SELinux / DNF logs (local-only)
+      *.rpm
+      *.rpmnew
+      *.rpmsave
+      *.selinux
+      *.dnfdb

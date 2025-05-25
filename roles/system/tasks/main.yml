@@ -1,0 +1,21 @@
+- name: Ensure [main] section exists
+  lineinfile:
+    path: /etc/dnf/dnf.conf
+    line: "[main]"
+    state: present
+    insertafter: BOF
+
+- name: Set DNF performance options under [main]
+  lineinfile:
+    path: /etc/dnf/dnf.conf
+    regexp: "^{{ item.key }}="
+    line: "{{ item.key }}={{ item.value }}"
+    insertafter: "^\\[main\\]"
+    state: present
+  loop:
+    - { key: "max_parallel_downloads", value: "10" }
+    - { key: "fastestmirror", value: "True" }
+    - { key: "metadata_timer_sync", value: "86400" }
+    - { key: "deltarpm", value: "False" }
+    - { key: "retries", value: "1" }
+    - { key: "keepcache", value: "True" }

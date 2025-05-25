@@ -1,0 +1,4 @@
+---
+- import_playbook: git.yml
+- import_playbook: firefox.yml
+- import_playbook: system.yml
