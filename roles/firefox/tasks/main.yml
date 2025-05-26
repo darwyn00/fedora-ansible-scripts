@@ -1,11 +1,11 @@
 - name: Ensure policy directory exists
-  file:
+  ansible.builtin.file:
     path: /etc/firefox/policies
     state: directory
     mode: '0755'
 
 - name: Write policies.json to disable telemetry and Pocket
-  copy:
+  ansible.builtin.copy:
     dest: /etc/firefox/policies/policies.json
     mode: '0644'
     content: |

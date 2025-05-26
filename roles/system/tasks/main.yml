@@ -1,12 +1,12 @@
 - name: Ensure [main] section exists
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/dnf/dnf.conf
     line: "[main]"
     state: present
     insertafter: BOF
 
 - name: Set DNF performance options under [main]
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/dnf/dnf.conf
     regexp: "^{{ item.key }}="
     line: "{{ item.key }}={{ item.value }}"
@@ -19,3 +19,32 @@
     - { key: "deltarpm", value: "False" }
     - { key: "retries", value: "1" }
     - { key: "keepcache", value: "True" }
+
+- name: Ensure Microsoft GPG key is trusted for VS Code
+  ansible.builtin.rpm_key:
+    key: https://packages.microsoft.com/keys/microsoft.asc
+    state: present
+
+- name: Ensure VS Code dnf repository is present
+  ansible.builtin.yum_repository:
+    name: vscode
+    description: Visual Studio Code
+    baseurl: https://packages.microsoft.com/yumrepos/vscode
+    enabled: true
+    gpgcheck: true
+    gpgkey: https://packages.microsoft.com/keys/microsoft.asc
+
+- name: Set mode 0644 on vscode repo
+  ansible.builtin.file:
+    path: /etc/yum.repos.d/vscode.repo
+    mode: '0644'
+
+- name: Ensure sw development packages are installed
+  ansible.builtin.package:
+    name:
+      - code
+      - git
+      - podman
+      - buildah
+      - skopeo
+    state: present

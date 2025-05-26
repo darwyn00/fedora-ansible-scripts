@@ -1,5 +1,5 @@
 - name: Configure global Git config
-  copy:
+  ansible.builtin.copy:
     dest: "{{ lookup('env', 'HOME') }}/.gitconfig"
     owner: "{{ lookup('env', 'USER') }}"
     mode: '0644'
@@ -33,13 +33,13 @@
         date = iso
 
 - name: Ensure ~/.config/git directory exists before configuring global .gitignore
-  file:
+  ansible.builtin.file:
     path: "{{ lookup('env', 'HOME') }}/.config/git"
     state: directory
     mode: '0755'
 
 - name: Configure global .gitignore
-  copy:
+  ansible.builtin.copy:
     dest: "{{ lookup('env', 'HOME') }}/.config/git/ignore"
     owner: "{{ lookup('env', 'USER') }}"
     mode: '0644'
